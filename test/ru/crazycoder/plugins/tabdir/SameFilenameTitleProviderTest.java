@@ -25,7 +25,6 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.testFramework.PsiTestUtil;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import org.apache.commons.lang3.StringUtils;
 import ru.crazycoder.plugins.tabdir.configuration.FolderConfiguration;
 import ru.crazycoder.plugins.tabdir.configuration.GlobalConfig;
 
@@ -40,6 +39,11 @@ public class SameFilenameTitleProviderTest extends BasePlatformTestCase {
     public static final String FILE_NAME = "simpleTest.java";
     private VirtualFile root;
     protected PsiManagerImpl myPsiManager;
+
+    private enum CreatedType {
+        FILE,
+        DIRECTORY
+    }
 
     public void setUp() throws Exception {
         super.setUp();
@@ -173,7 +177,7 @@ public class SameFilenameTitleProviderTest extends BasePlatformTestCase {
 
     private void processRow(String row, List<VirtualFile> levels, Map<String, VirtualFile> fileSystem) throws IOException {
         int levelPointer = 0;
-        if (StringUtils.isBlank(row)) {
+        if (row.isBlank()) {
             return;
         }
         boolean entryCreated = false;
@@ -206,14 +210,19 @@ public class SameFilenameTitleProviderTest extends BasePlatformTestCase {
         CreatedType type = CreatedType.DIRECTORY;
         VirtualFile created;
         if (name.endsWith("/")) {
-            created = parent.createChildDirectory(this, StringUtils.chomp(name, "/"));
+            created = parent.createChildDirectory(this, name.substring(0, name.length() - 1));
             levels.add(created);
         } else {
             created = createFile(parent, name);
             type = CreatedType.FILE;
         }
         String absolutePath = created.getPath();
-        fileSystem.put(StringUtils.removeStart(absolutePath, getProject().getBasePath() + "/"), created);
+        String basePath = getProject().getBasePath() + "/";
+        if (absolutePath.startsWith(basePath)) {
+            absolutePath = absolutePath.substring(basePath.length());
+        }
+        fileSystem.put(absolutePath, created);
+
         return type;
     }
 
@@ -235,10 +244,5 @@ public class SameFilenameTitleProviderTest extends BasePlatformTestCase {
         final PsiFile file = myPsiManager.findFile(vFile);
         assertNotNull(file);
         return file.getVirtualFile();
-    }
-
-    private enum CreatedType {
-        FILE,
-        DIRECTORY
     }
 }

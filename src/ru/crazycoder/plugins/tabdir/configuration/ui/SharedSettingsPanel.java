@@ -47,7 +47,6 @@ public class SharedSettingsPanel {
     private JLabel dirsToShowL;
     private JCheckBox countFromStartCB;
     private JCheckBox removeDuplicatesCB;
-    private JLabel emptyPathReplacementLabel;
     private JTextField emptyPathReplacementTF;
     private final SpinnerNumberModel dirsToShowModel = new SpinnerNumberModel(3, 1, 10, 1);
     private final SpinnerNumberModel charsInNameModel = new SpinnerNumberModel(3, 1, 20, 1);
