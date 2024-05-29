@@ -20,7 +20,7 @@
     <dirname property="basedir" file="${ant.file}"/>
 
     <property file="build.properties"/>
-    <property name="version" value="2.0.1"/>
+    <property name="version" value="2.0.2"/>
 
     <!-- If the Idea and JDK on your system are not located at the paths below,
     you can specify your paths in build.properties (example in build.properties.example).
