@@ -41,6 +41,7 @@ final public class GlobalConfig
     private static final String DEFAULT_DIR_SEPARATOR = "|";
 
     private boolean projectConfigEnabled;
+    private String filenameRegexes;
 
     public GlobalConfig() {
         this.setCharsInName(5);
@@ -53,6 +54,7 @@ final public class GlobalConfig
         this.setCountMaxDirsFromStart(true);
         this.setEmptyPathReplacement("");
         projectConfigEnabled = false;
+        this.setFilenameRegexes("");
     }
 
     @Override
@@ -71,5 +73,13 @@ final public class GlobalConfig
 
     public void setProjectConfigEnabled(final boolean projectConfigEnabled) {
         this.projectConfigEnabled = projectConfigEnabled;
+    }
+
+    public void setFilenameRegexes(final String filenameRegexes) {
+        this.filenameRegexes = filenameRegexes;
+    }
+
+    public String getFilenameRegexes() {
+        return filenameRegexes;
     }
 }

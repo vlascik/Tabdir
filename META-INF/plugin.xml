@@ -14,46 +14,61 @@
   ~ limitations under the License.
   -->
 
-<idea-plugin url="https://github.com/crazyproger/Tabdir">
-    <id>ru.crazycoder.plugins.tabdir</id>
-    <name>Tabdir</name>
+<idea-plugin url="https://github.com/vlascik/Tabdir">
+    <id>vlascik.plugins.tabdir-redux</id>
+    <name>Tabdir Redux</name>
     <description><![CDATA[
-        <p>Awesome replacement for IDEA's 'Show directory in editor tabs for non-unique filenames'.
-            If you have same named files in different directories this plugin will allow you to have directory names
-            added to tab labels.
-            It only shows path differences so if you have "blog/controllers/index" and "news/controllers/index" it will
-            add either [blog] or [news].
-            In setting tab 'Tabdir' you can control how prefixes will be formatted.</p>
-        <p>Per-project configuration allows specifying different formatting rules for each directory in project.
-            To enable per-project configuration enable "<b>Use per project configuration</b>" checkbox(see screenshot
-            №3)
-            and reopen settings window(need close with Ok or Apply buttons). After this you will find 'Tabdir'
-            configuration
-            in project section(screenshot №4) in which different configurations can be specified. </p>
+<h1 id="tabdir-redux">Tabdir Redux</h1>
+<p>This plugin will allow you to have directory names added to tab labels, and use various ways to shorten them, including regex.</p>
+<p>This is an updated and extended fork of IntelliJ plugin <strong>Tabdir</strong>, originally found on Github
+at <a href="https://github.com/crazyproger/Tabdir">crazyproger/Tabdir</a> and IntelliJ Plugin
+Marketplace <a href="https://plugins.intellij.net/plugin/?idea&amp;id=5045">here</a>.</p>
+<p>You can install this fork of the plugin from the IntelliJ Marketplace <a href="https://plugins.jetbrains.com/plugin/24528-tabdir-redux">here</a>. You
+will have to uninstall the old version first.</p>
+<h2 id="description">Description</h2>
+<p>Awesome replacement for IDEA&#39;s &#39;Show directory in editor tabs for non-unique filenames&#39;. This plugin will allow you to have directory names
+added to tab labels. It can also show only path differences, so if you have <code>blog/controllers/index</code> and <code>news/controllers/index</code>, it will
+add either <code>[blog]</code> or <code>[news]</code>. You can control how prefixes will be formatted in Settings tab &#39;Tabdir&#39;.</p>
+<p>Tip: If you&#39;re having trouble managing dozens of open files, try enabling vertical tabs and &#39;Sort tabs alphabetically&#39;.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>add file&#39;s path to tab title</li>
+<li>shorten the file&#39;s path in table title, limit folder name length and number of nested folders</li>
+<li>configure different tab prefixes for any folder</li>
+<li>set empty path prefixes - if the file&#39;s path is shortened to an empty string, e.g. file is at top level of a folder, you can assign it a
+custom prefix to keep these files ordered together</li>
+<li>regex replacements for tab titles</li>
+</ul>
+<h2 id="configuration">Configuration</h2>
+<p>Per-project configuration allows specifying different formatting rules for each directory in project.</p>
+<p>To enable per-project configuration, enable &quot;Use per project configuration&quot; checkbox and reopen settings window (needs close with Ok or
+Apply buttons). After this you will find &#39;Tabdir Project Settings&#39; configuration in &quot;Other Settings&quot;.</p>
+<p>Note: you should turn off IDE Settings → Editor tabs → Show directory in editor tabs for non-unique filenames.</p>
 
-        Note: that you should turn off IDE Settings → Editor tabs → Show directory in editor tabs for non-unique filenames.
-        ]]>
+<p>As the original author seems to have lost access to publish new versions of the original plugin, with his permission, this is a fork under a new name.</p>
+]]>
     </description>
 
-    <version>1.7.0</version>
-    <vendor>Vladimir Rudev (mod: vl)</vendor>
+    <version>2.0.0</version>
+    <vendor>Vladimir Rudev, V. Lascik</vendor>
     <idea-version since-build="233.13135.103" until-build="400.*"/>
     <change-notes><![CDATA[
         <ul>
-            <li>1.1 Add possibility to configure tab title format.</li>
-            <li>1.2 Fixed NPE for files with no path(in memory).</li>
-            <li>1.3 Add possibility to configure per project format for directories.</li>
-            <li>1.3.1 Share plugin to all IntelliJ Platform products.</li>
-            <li>1.4 Fixed NPE(was in phpstorm), update description.</li>
-            <li>1.5 Tabdir-4 issue fixed, copyright updated</li>
-            <li>1.6 Tabdir-9, Tabdir-10, Tabdir-11 issues fixed</li>
-            <li>1.6.1 Fix for IDEA 12</li>
-            <li>1.6.2 IDEA 12(EAP) release only: fixed Tabdir-15</li>
-            <li>1.6.3 Rebuild in java1.6</li>
-            <li>1.6.4 Fixed Tabdir-16</li>
-            <li>1.6.5 Merged Tabdir-16 into main</li>
-            <li>1.6.7 (mod: vl) Fixup for Idea 202+</li>
+            <li>2.0.0 Publish a fork under a new name (Tabdir Redux), add regex replacements for tab titles</li>
             <li>1.7.0 (mod: vl) Fixup for Idea 233+ (2023.3.2+), add empty path prefixes</li>
+            <li>1.6.7 (mod: vl) Fixup for Idea 202+</li>
+            <li>1.6.5 Merged Tabdir-16 into main</li>
+            <li>1.6.4 Fixed Tabdir-16</li>
+            <li>1.6.3 Rebuild in java1.6</li>
+            <li>1.6.2 IDEA 12(EAP) release only: fixed Tabdir-15</li>
+            <li>1.6.1 Fix for IDEA 12</li>
+            <li>1.6 Tabdir-9, Tabdir-10, Tabdir-11 issues fixed</li>
+            <li>1.5 Tabdir-4 issue fixed, copyright updated</li>
+            <li>1.4 Fixed NPE(was in phpstorm), update description.</li>
+            <li>1.3.1 Share plugin to all IntelliJ Platform products.</li>
+            <li>1.3 Add possibility to configure per project format for directories.</li>
+            <li>1.2 Fixed NPE for files with no path(in memory).</li>
+            <li>1.1 Add possibility to configure tab title format.</li>
         </ul>
         ]]>
     </change-notes>

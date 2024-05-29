@@ -20,6 +20,8 @@
     <dirname property="basedir" file="${ant.file}"/>
 
     <property file="build.properties"/>
+    <property name="version" value="2.0.0"/>
+
     <!-- If the Idea and JDK on your system are not located at the paths below,
     you can specify your paths in build.properties (example in build.properties.example).
     If everything is fine as it is, the build.properties file may not exist,
@@ -35,7 +37,7 @@
 
     <property name="lib.dir" value="lib"/>
     <property name="build.dir" value="build"/>
-    <property name="tabdir.jar.file" value="${build.dir}/tabdir.jar"/>
+    <property name="tabdir.jar.file" value="${build.dir}/tabdir-redux-${version}.jar"/>
 
     <path id="javac2.classpath">
         <pathelement location="${javac2.home}/javac2.jar"/>

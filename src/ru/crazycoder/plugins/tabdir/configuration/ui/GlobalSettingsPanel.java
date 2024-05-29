@@ -29,6 +29,8 @@ public class GlobalSettingsPanel {
     private JPanel sharedSettingsPanel;
     private JCheckBox projectConfigEnabledCB;
     private JPanel rootPanel;
+    private JTextArea filenameRegexesTA;
+    private JLabel filenameRegexesL;
 
     private SharedSettingsPanel sharedSettings;
 
@@ -37,18 +39,22 @@ public class GlobalSettingsPanel {
         if (sharedSettings.isModified(config)) {
             return true;
         } else {
-            return !(config.isProjectConfigEnabled() == projectConfigEnabledCB.isSelected());
+            return !(config.isProjectConfigEnabled() == projectConfigEnabledCB.isSelected() &&
+                    config.getFilenameRegexes() == filenameRegexesTA.getText()
+            );
         }
     }
 
     public void getData(GlobalConfig config) {
         sharedSettings.getData(config);
         config.setProjectConfigEnabled(projectConfigEnabledCB.isSelected());
+        config.setFilenameRegexes(filenameRegexesTA.getText());
     }
 
     public void setData(GlobalConfig config) {
         sharedSettings.setData(config);
         projectConfigEnabledCB.setSelected(config.isProjectConfigEnabled());
+        filenameRegexesTA.setText(config.getFilenameRegexes());
     }
 
     public JPanel getRootPanel() {

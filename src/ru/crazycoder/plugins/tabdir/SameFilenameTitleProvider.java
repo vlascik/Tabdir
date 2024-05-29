@@ -26,8 +26,6 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.ProjectScope;
-import com.intellij.util.indexing.FileBasedIndex;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import ru.crazycoder.plugins.tabdir.configuration.FolderConfiguration;
 import ru.crazycoder.plugins.tabdir.configuration.GlobalConfig;
@@ -35,6 +33,7 @@ import ru.crazycoder.plugins.tabdir.configuration.ProjectConfig;
 
 import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * User: crazycoder
@@ -46,7 +45,7 @@ public class SameFilenameTitleProvider
 
     private final Logger log = Logger.getInstance(this.getClass().getCanonicalName());
 
-    private final GlobalConfig configuration = ApplicationManager.getApplication().getService(GlobalConfig.class);
+    private final GlobalConfig globalConfig = ApplicationManager.getApplication().getService(GlobalConfig.class);
     private final Comparator<VirtualFile> comparator = Comparator.comparingInt(file -> file.getPath().length());
 
 
@@ -65,7 +64,7 @@ public class SameFilenameTitleProvider
             if (!needProcessFile(file, matchedConfiguration)) {
                 return null;
             }
-            if (StringUtils.isNotEmpty(matchedConfiguration.getRelativeTo())) {
+            if (!matchedConfiguration.getRelativeTo().isEmpty()) {
                 return titleRelativeTo(file, matchedConfiguration);
             } else {
                 return titleWithDiffs(project, file, matchedConfiguration);
@@ -77,8 +76,8 @@ public class SameFilenameTitleProvider
     }
 
     private FolderConfiguration findConfiguration(final Project project, final VirtualFile file) {
-        if (!configuration.isProjectConfigEnabled()) {
-            return configuration;
+        if (!globalConfig.isProjectConfigEnabled()) {
+            return globalConfig;
         }
         ProjectConfig projectConfig = project.getService(ProjectConfig.class);
         Map<String, FolderConfiguration> folderConfigs = projectConfig.getFolderConfigurations();
@@ -97,7 +96,7 @@ public class SameFilenameTitleProvider
         }
         if (matchedConfiguration == null) {
             // no project config for current file - use global config
-            matchedConfiguration = configuration;
+            matchedConfiguration = globalConfig;
         }
         return matchedConfiguration;
     }
@@ -106,21 +105,24 @@ public class SameFilenameTitleProvider
         String basePath = FileUtil.toSystemDependentName(configuration.getRelativeTo());
         String filePath = FileUtil.toSystemDependentName(file.getPath());
         String relativePath = FileUtil.getRelativePath(basePath, filePath, File.separatorChar);
-        String[] parts = StringUtils.split(relativePath, File.separatorChar);
-        if (parts != null) {
-            List<String> prefixes = new ArrayList<>(Arrays.asList(parts));
-            if (prefixes.size() > 1) {
-                prefixes.remove(prefixes.size() - 1);
-                return TitleFormatter.format(prefixes, file.getPresentableName(), configuration);
-            }
+        if (relativePath == null) relativePath = "";
+        String[] parts = relativePath.split(Pattern.quote(File.separator));
+        List<String> prefixes = new ArrayList<>(Arrays.asList(parts));
+        if (prefixes.size() > 1) {
+            prefixes.remove(prefixes.size() - 1);
+            return TitleFormatter.format(prefixes, file.getPresentableName(), configuration);
         }
-        GlobalConfig globalConfig = ApplicationManager.getApplication().getService(GlobalConfig.class);
-        String globalEmptyPrefix = (globalConfig.getEmptyPathReplacement() != null) ? globalConfig.getEmptyPathReplacement() : "";
-        String emptyPrefix = (configuration.getEmptyPathReplacement() != null) ? configuration.getEmptyPathReplacement() : "";
+
+        String tabTitle = TitleFormatter.getRegexedTabTitle(file.getPresentableName());
+        return this.getEmptyPrefix(configuration) + tabTitle;
+    }
+
+    private String getEmptyPrefix(final FolderConfiguration folderConfig) {
+        String emptyPrefix = (folderConfig.getEmptyPathReplacement() != null) ? folderConfig.getEmptyPathReplacement() : "";
         if (emptyPrefix.isBlank()) {
-            emptyPrefix = globalEmptyPrefix;
+            emptyPrefix = (globalConfig.getEmptyPathReplacement() != null) ? globalConfig.getEmptyPathReplacement() : "";
         }
-        return emptyPrefix + file.getPresentableName();
+        return emptyPrefix;
     }
 
     private String titleWithDiffs(final Project project, final VirtualFile file, final FolderConfiguration configuration) {
@@ -146,8 +148,8 @@ public class SameFilenameTitleProvider
 
     /**
      * @return <b>key</b> - ancestor folder name,<br/>
-     *         <b>value</b> - neighbours of key folder that ancestors of similar files.<br/>
-     *         Keys in map stored in order as in {@link #titleWithDiffs(com.intellij.openapi.project.Project, com.intellij.openapi.vfs.VirtualFile, ru.crazycoder.plugins.tabdir.configuration.FolderConfiguration)}
+     * <b>value</b> - neighbours of key folder that ancestors of similar files.<br/>
+     * Keys in map stored in order as in {@link #titleWithDiffs(com.intellij.openapi.project.Project, com.intellij.openapi.vfs.VirtualFile, ru.crazycoder.plugins.tabdir.configuration.FolderConfiguration)}
      */
     private LinkedHashMap<String, Set<String>> calculatePrefixesWithoutDuplicates(VirtualFile file, Collection<VirtualFile> similarFiles) {
         LinkedHashMap<String, Set<String>> prefixes = new LinkedHashMap<>();
