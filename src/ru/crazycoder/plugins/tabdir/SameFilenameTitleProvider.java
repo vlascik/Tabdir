@@ -59,19 +59,14 @@ public class SameFilenameTitleProvider
     }
 
     public String getEditorTabTitleInternal(final Project project, final VirtualFile file) {
-        try {
-            FolderConfiguration matchedConfiguration = findConfiguration(project, file);
-            if (!needProcessFile(file, matchedConfiguration)) {
-                return null;
-            }
-            if (matchedConfiguration.getRelativeTo() != null && !matchedConfiguration.getRelativeTo().isEmpty()) {
-                return titleRelativeTo(file, matchedConfiguration);
-            } else {
-                return titleWithDiffs(project, file, matchedConfiguration);
-            }
-        } catch (Exception e) {
-            log.error("", e);
-            throw e;
+        FolderConfiguration matchedConfiguration = findConfiguration(project, file);
+        if (!needProcessFile(file, matchedConfiguration)) {
+            return null;
+        }
+        if (matchedConfiguration.getRelativeTo() != null && !matchedConfiguration.getRelativeTo().isEmpty()) {
+            return titleRelativeTo(file, matchedConfiguration);
+        } else {
+            return titleWithDiffs(project, file, matchedConfiguration);
         }
     }
 
