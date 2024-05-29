@@ -64,15 +64,15 @@ public class SameFilenameTitleProvider
             if (!needProcessFile(file, matchedConfiguration)) {
                 return null;
             }
-            if (!matchedConfiguration.getRelativeTo().isEmpty()) {
+            if (matchedConfiguration.getRelativeTo() != null && !matchedConfiguration.getRelativeTo().isEmpty()) {
                 return titleRelativeTo(file, matchedConfiguration);
             } else {
                 return titleWithDiffs(project, file, matchedConfiguration);
             }
         } catch (Exception e) {
             log.error("", e);
+            throw e;
         }
-        return null;
     }
 
     private FolderConfiguration findConfiguration(final Project project, final VirtualFile file) {
