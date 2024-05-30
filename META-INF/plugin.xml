@@ -49,11 +49,12 @@ Apply buttons). After this you will find &#39;Tabdir Project Settings&#39; confi
 ]]>
     </description>
 
-    <version>2.0.2</version>
+    <version>2.0.3</version>
     <vendor>Vladimir Rudev, V. Lascik</vendor>
-    <idea-version since-build="233.13135.103" until-build="400.*"/>
+    <idea-version since-build="233.13135.103"/>
     <change-notes><![CDATA[
         <ul>
+            <li>2.0.3 Remove until-build from plugin definition</li>
             <li>2.0.2 Fix more exceptions</li>
             <li>2.0.1 Fix exceptions</li>
             <li>2.0.0 Publish a fork under a new name (Tabdir Redux), add regex replacements for tab titles</li>
