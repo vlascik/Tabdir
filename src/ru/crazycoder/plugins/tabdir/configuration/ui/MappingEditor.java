@@ -54,9 +54,14 @@ public class MappingEditor
         relativeToTF.getChildComponent().setText(folderConfiguration.getRelativeTo());
         sharedSettingsComp.setData(folderConfiguration);
         configurationDirectoryTF.addActionListener(new BrowseFolderListener(project));
-        relativeToTF.addActionListener(new ComponentWithBrowseButton.BrowseFolderActionListener<>("Select Directory",
-                "Select directory relative to which you want see path in tab", relativeToTF, project,
-                new FileChooserDescriptor(false, true, false, false, false, false), TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT));
+
+        relativeToTF.addActionListener(new ComponentWithBrowseButton.BrowseFolderActionListener<>(
+                relativeToTF,
+                project,
+                new FileChooserDescriptor(false, true, false, false, false, false).withTitle("Select Directory").withDescription("Select directory relative to which you want see path in tab"),
+                TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT)
+        );
+
         setTitle("Folder Tabdir Configuration");
         init();
     }
@@ -84,8 +89,8 @@ public class MappingEditor
         private final Project project;
 
         public BrowseFolderListener(Project project) {
-            super("Select Directory", "Select directory to which you want set config", configurationDirectoryTF, project,
-                    new FileChooserDescriptor(false, true, false, false, false, false), TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
+            super(configurationDirectoryTF, project,
+                    new FileChooserDescriptor(false, true, false, false, false, false).withTitle("Select Directory").withDescription("Select directory to which you want set config"), TextComponentAccessor.TEXT_FIELD_WHOLE_TEXT);
             this.project = project;
         }
 
