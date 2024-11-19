@@ -20,7 +20,7 @@
     <description><![CDATA[
 <h1 id="tabdir-redux">Tabdir Redux</h1>
 <p>This plugin will allow you to have directory names added to tab labels, and use various ways to shorten them, including regex.</p>
-<p>This is an updated and extended fork of IntelliJ plugin <strong>Tabdir</strong>, originally found on Github
+<p>This is an updated and extended fork of IntelliJ plugin <strong>Tabdir</strong>, originally found on GitHub
 at <a href="https://github.com/crazyproger/Tabdir">crazyproger/Tabdir</a> and IntelliJ Plugin
 Marketplace <a href="https://plugins.intellij.net/plugin/?idea&amp;id=5045">here</a>.</p>
 <p>You can install this fork of the plugin from the IntelliJ Marketplace <a href="https://plugins.jetbrains.com/plugin/24528-tabdir-redux">here</a>. You
@@ -49,11 +49,12 @@ Apply buttons). After this you will find &#39;Tabdir Project Settings&#39; confi
 ]]>
     </description>
 
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <vendor>Vladimir Rudev, V. Lascik</vendor>
     <idea-version since-build="233.13135.103"/>
     <change-notes><![CDATA[
         <ul>
+            <li>2.0.4 Fix ReadableAction exceptions, remove deprecated APIs</li>
             <li>2.0.3 Remove until-build from plugin definition</li>
             <li>2.0.2 Fix more exceptions</li>
             <li>2.0.1 Fix exceptions</li>

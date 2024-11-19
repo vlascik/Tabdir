@@ -17,6 +17,7 @@
 package ru.crazycoder.plugins.tabdir;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.impl.EditorTabTitleProvider;
 import com.intellij.openapi.project.Project;
@@ -121,7 +122,7 @@ public class SameFilenameTitleProvider
     }
 
     private String titleWithDiffs(final Project project, final VirtualFile file, final FolderConfiguration configuration) {
-        Collection<VirtualFile> similarFiles = FilenameIndex.getVirtualFilesByName(file.getName(), ProjectScope.getProjectScope(project));
+        Collection<VirtualFile> similarFiles = ReadAction.compute(() -> FilenameIndex.getVirtualFilesByName(file.getName(), ProjectScope.getProjectScope(project)));
 
         if (similarFiles.size() < 2) {
             return file.getPresentableName();
