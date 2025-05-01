@@ -12,9 +12,7 @@ You can install this fork of the plugin from the IntelliJ Marketplace [here](htt
 
 ## Description
 
-Awesome replacement for IDEA's 'Show directory in editor tabs for non-unique filenames'. This plugin will allow you to have directory names
-added to tab labels. It can also show only path differences, so if you have `blog/controllers/index` and `news/controllers/index`, it will
-add either `[blog]` or `[news]`. You can control how prefixes will be formatted in Settings tab 'Tabdir'.
+Awesome replacement for IDEA's 'Show directory in editor tabs for non-unique filenames'. This plugin will allow you to have directory names added to tab labels. It can also show only path differences, so if you have `blog/controllers/index` and `news/controllers/index`, it will add either `[blog]` or `[news]`. You can control how prefixes will be formatted in Settings tab 'Tabdir'.
 
 Tip: If you're having trouble managing dozens of open files, try enabling vertical tabs and 'Sort tabs alphabetically'.
 
@@ -23,15 +21,21 @@ Tip: If you're having trouble managing dozens of open files, try enabling vertic
 * add file's path to tab title
 * shorten the file's path in table title, limit folder name length and number of nested folders
 * configure different tab prefixes for any folder
-* set empty path prefixes - if the file's path is shortened to an empty string, e.g. file is at top level of a folder, you can assign it a
-  custom prefix to keep these files ordered together
+* set empty path prefixes—if the file's path is shortened to an empty string, e.g., the file is at the top level of a folder, you can assign it a custom prefix to keep these files ordered together
 * regex replacements for tab titles
 
 ## Configuration
 
 Per-project configuration allows specifying different formatting rules for each directory in project.
 
-To enable per-project configuration, enable "Use per project configuration" checkbox and reopen settings window (needs close with Ok or
-Apply buttons). After this you will find 'Tabdir Project Settings' configuration in "Other Settings".
+To enable per-project configuration, enable "Use per project configuration" checkbox and reopen the `Settings` window (needs close with `Ok` or `Apply` buttons). After that, you will find 'Tabdir Project Settings' configuration in "Other Settings".
 
 Note: you should turn off IDE Settings → Editor tabs → Show directory in editor tabs for non-unique filenames.
+
+## Usage notes
+- There is some weirdness around the global configuration, so create at least one Per project configuration and set its `Configuration for directory` and `Always show path relative to` to your project's folder. 
+- If the path (`{0}`) part after the tab title replacement ends up empty, it is not shown, so use unique `Empty path replacement` to distinguish the different folders. `Empty path replacement` will be prepended to the filename.
+- Use e.g. a `space` or some special character as `Empty path replacement` for your project's root folder, that way you can keep all the files in root together.
+- Regex title replacements work on full tab title you get after the Tab title format (`[{0}] $1` by default, which means `[folder] filename`). The regex is in `java.util.regex` format, regexes are newline delimited and `::` separated strings of `match::replacement`.
+- You can use any Java's regex syntax tricks, e.g., capture groups in both match and replacement, so running e.g. `app/(.*)/routes/(.*)\.ts::foo $1 $2` on `app/web/routes/my-route.ts` will end up with `foo web my-route`.
+- regex results are chained, the result of a first regex is an input for the second one, and so on, and run top to bottom, so you can run multiple regexes on the same title. As a result, you have to take care about unexpected matches and replacements.
