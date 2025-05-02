@@ -44,16 +44,27 @@ custom prefix to keep these files ordered together</li>
 <p>To enable per-project configuration, enable &quot;Use per project configuration&quot; checkbox and reopen settings window (needs close with Ok or
 Apply buttons). After this you will find &#39;Tabdir Project Settings&#39; configuration in &quot;Other Settings&quot;.</p>
 <p>Note: you should turn off IDE Settings → Editor tabs → Show directory in editor tabs for non-unique filenames.</p>
-
+<h2 id="usage-notes">Usage notes</h2>
+<ul>
+<li>There is some weirdness around the global configuration, so create at least one Per project configuration and set its `Configuration for directory` and `Always show path relative to` to your project's folder.</li>
+<li>If the path (`[{0}]`) part after the tab title replacement ends up empty, nothing in `[]` brackets is shown, so use unique `Empty path replacement` to differentiate the folders. `Empty path replacement` will be prepended to the filename.</li>
+<li>Use e.g. a `space` or some special character as `Empty path replacement` for your project's root folder, that way you can keep all the files in root together.</li>
+<li>Regex title replacements work on full tab title you get after the Tab title format (`[{0}] $1` by default, which means `[folder] filename`). The regex is in `java.util.regex` format, regexes are newline delimited and `::` separated strings of `match::replacement`.</li>
+<li>You can use any Java's regex syntax tricks, e.g., capture groups in both match and replacement, so running e.g. `app/(.*)/routes/(.*)\.ts::foo $1 $2` on `app/web/routes/my-route.ts` will end up with `foo web my-route`.</li>
+<li>Regex results are chained, the result of a first regex is an input for the second one, and so on, and run top to bottom, so you can run multiple regexes on the same title. As a result, you have to take care about unexpected matches and replacements.</li>
+<li>If the opened file is outside your project, the directory won't be shown unless you configure `Tabdir Project Settings` and add folder for e.g. the root of the drive the file is in - for example, Configuration for directory: `C:\`, Always show path relative to: `C:\`, Tab title format: `[C:/{0}] {1}`, Reduce dir names: unchecked.</li>
+<li>To show tab title format changes for the already open files, you will either have to reopen the files, or change Tabs placement (`Settings -> Editor -> General -> Editor Tabs`), from e.g., `Left` to `Top`, click `Apply`, and then set it back to your preference and click `Ok` (haven't found a better way to update the tab titles yet, sorry).</li>
+</ul>
 <p>As the original author seems to have lost access to publish new versions of the original plugin, with his permission, this is a fork under a new name.</p>
 ]]>
     </description>
 
-    <version>2.0.5</version>
+    <version>2.0.6</version>
     <vendor>Vladimir Rudev, V. Lascik</vendor>
     <idea-version since-build="243.21565.193"/>
     <change-notes><![CDATA[
         <ul>
+            <li>2.0.6 Fix regexp split, add usage notes</li>
             <li>2.0.5 Mark as only compatible with 2024.3+</li>
             <li>2.0.4 Fix ReadableAction exceptions, remove deprecated APIs</li>
             <li>2.0.3 Remove until-build from plugin definition</li>
