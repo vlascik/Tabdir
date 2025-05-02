@@ -140,10 +140,10 @@ public class TitleFormatter {
         for (String regex : filenameRegexes) {
             try {
                 if (!regex.contains("::")) continue;
-                String[] r = regex.split("[::]");
-                if (!(r.length == 3 || r.length == 1)) continue;
+                String[] r = regex.split("::");
+                if (r.length != 2) continue;
                 String match = r[0];
-                String replacement = r.length == 3 ? r[2] : "";
+                String replacement = r[1];
                 Pattern pattern = Pattern.compile(match, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(result);
                 result = matcher.replaceAll(replacement);

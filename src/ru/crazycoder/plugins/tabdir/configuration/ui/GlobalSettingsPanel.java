@@ -34,13 +34,17 @@ public class GlobalSettingsPanel {
 
     private SharedSettingsPanel sharedSettings;
 
+    public GlobalSettingsPanel() {
+        this.createUIComponents();
+    }
+
     public boolean isModified(GlobalConfig config) {
         //noinspection SimplifiableIfStatement
-        if (sharedSettings.isModified(config)) {
+        if (sharedSettings != null && sharedSettings.isModified(config)) {
             return true;
         } else {
             return !(config.isProjectConfigEnabled() == projectConfigEnabledCB.isSelected() &&
-                    config.getFilenameRegexes() == filenameRegexesTA.getText()
+                    config.getFilenameRegexes().equals(filenameRegexesTA.getText())
             );
         }
     }
